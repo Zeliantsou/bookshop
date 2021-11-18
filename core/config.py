@@ -3,6 +3,8 @@ from typing import Any, Union, List, Dict, Optional
 
 from pydantic import BaseSettings, AnyHttpUrl, HttpUrl, EmailStr, PostgresDsn, validator
 
+# github token --> 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
+
 
 class Settings(BaseSettings):
     API_V1_STR: str = 'api/v1'
