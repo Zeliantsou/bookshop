@@ -6,11 +6,11 @@ from pydantic import BaseSettings, AnyHttpUrl, EmailStr, PostgresDsn, validator
 
 class Settings(BaseSettings):
     API_V1_STR: str = '/api/v1'
-    SECRET_KEY: str = os.environ.get('SECRET_KEY', None)
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES', None)
-    SERVER_NAME: str = os.environ.get('SERVER_NAME', None)
-    SERVER_HOST: AnyHttpUrl = os.environ.get('SERVER_HOST', None)
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = os.environ.get('BACKEND_CORS_ORIGINS', None)
+    SECRET_KEY: str = os.environ.get('SECRET_KEY')
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES')
+    SERVER_NAME: str = os.environ.get('SERVER_NAME')
+    SERVER_HOST: AnyHttpUrl = os.environ.get('SERVER_HOST')
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = os.environ.get('BACKEND_CORS_ORIGINS')
 
     @validator("BACKEND_CORS_ORIGINS", pre=True)
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
@@ -22,11 +22,11 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = 'BookShop'
 
-    POSTGRES_SERVER: str = os.environ.get('POSTGRES_SERVER', None)
-    POSTGRES_USER: str = os.environ.get('POSTGRES_USER', None)
-    POSTGRES_PASSWORD: str = os.environ.get('POSTGRES_PASSWORD', None)
-    POSTGRES_DB: str = os.environ.get('POSTGRES_DB', None)
-    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = os.environ.get('SQLALCHEMY_DATABASE_URI', None)
+    POSTGRES_SERVER: str = os.environ.get('POSTGRES_SERVER')
+    POSTGRES_USER: str = os.environ.get('POSTGRES_USER')
+    POSTGRES_PASSWORD: str = os.environ.get('POSTGRES_PASSWORD')
+    POSTGRES_DB: str = os.environ.get('POSTGRES_DB')
+    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
@@ -40,9 +40,9 @@ class Settings(BaseSettings):
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
 
-    FIRST_SUPERUSER: str = os.environ.get('FIRST_SUPERUSER', None)
-    FIRST_SUPERUSER_EMAIL: EmailStr = os.environ.get('FIRST_SUPERUSER_EMAIL', None)
-    FIRST_SUPERUSER_PASSWORD: str = os.environ.get('FIRST_SUPERUSER_PASSWORD', None)
+    FIRST_SUPERUSER: str = os.environ.get('FIRST_SUPERUSER')
+    FIRST_SUPERUSER_EMAIL: EmailStr = os.environ.get('FIRST_SUPERUSER_EMAIL')
+    FIRST_SUPERUSER_PASSWORD: str = os.environ.get('FIRST_SUPERUSER_PASSWORD')
     USERS_OPEN_REGISTRATION: bool = False
 
     class Config:
