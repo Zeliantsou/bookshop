@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING
-from datetime import date
 
-from sqlalchemy import Column, Boolean, Integer, String, Text, Date
+from sqlalchemy import Column, Boolean, Integer, String
 from sqlalchemy.orm import relationship
 
 from db.base_class import Base
@@ -17,4 +16,4 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean(), default=True)
     is_superuser = Column(Boolean(), default=False)
-    books = relationship('Book', back_populates='user')
+    books = relationship('Book', back_populates='owner')

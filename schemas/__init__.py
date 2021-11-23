@@ -13,8 +13,10 @@ from schemas.msg import Msg
 from schemas.token import Token, TokenPayload
 from schemas.user import (
     UserBaseSchema,
-    UserCreateUpdateSchema,
+    UserCreateSchema,
+    UserUpdateSchema,
     UserRetrieveListSchema,
     UserUpdateSchemaForAdmin,
-    UserRetrieveListSchemaForAdmin
+    UserRetrieveListSchemaForAdmin,
+    UserLoginSchema
 )

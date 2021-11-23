@@ -9,6 +9,9 @@ class AuthorBaseSchema(BaseModel):
     description: Optional[str]
     birthday: date
 
+    class Config:
+        orm_mode = True
+
 
 class AuthorCreateUpdateSchema(AuthorBaseSchema):
     pass

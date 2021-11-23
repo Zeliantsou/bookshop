@@ -11,9 +11,12 @@ class BookBaseSchema(BaseModel):
     name: str
     description: Optional[str]
     price: Decimal
-    added: date = date.today()  # нужно ли вызывать today?
+    added: date = date.today()
     pages: int
     authors: List[AuthorBaseSchema]
+
+    class Config:
+        orm_mode = True
 
 
 class BookCreateUpdateSchemaForAdmin(BookBaseSchema):
@@ -26,4 +29,4 @@ class BookRetrieveListSchemaForAdmin(BookBaseSchema):
 
 
 class BookRetrieveListSchema(BookBaseSchema):
-    owner_id: Optional[int]  # поле, чтобы выводилось не id, a name user
+    owner_id: Optional[int]

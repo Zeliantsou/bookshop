@@ -11,14 +11,17 @@ from api.deps import get_db, get_current_user
 router = APIRouter()
 
 
-def get_response_model(current_user: models.User):
-    if current_user.is_superuser:
-        return List[schemas.AuthorRetrieveListSchema]
-    return List[schemas.AuthorBaseSchema]
+@router.get('/', response_model=List[schemas.AuthorRetrieveListSchema])
+def get_author_list_admin(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 100,
+) -> Any:
+    return crud.crud_author.get_multi(db, skip=skip, limit=limit)
 
 
-@router.get('/', response_model=get_response_model(Depends(get_current_user)))  # только Depends могу передать?
-def get_author_list(
+@router.get('/', response_model=List[schemas.AuthorBaseSchema])
+def get_author_list_user(
     db: Session = Depends(get_db),
     skip: int = 0,
     limit: int = 100,
@@ -29,11 +32,11 @@ def get_author_list(
 @router.post('/', response_model=schemas.AuthorCreateUpdateSchema)
 def create_author(
         *,
+        author_in: schemas.AuthorCreateUpdateSchema,
         db: Session = Depends(get_db),
-        author_in = schemas.AuthorCreateUpdateSchema,
-        current_user: models.User = Depends(get_current_user)
+        current_user: models.User = Depends(get_current_user),
 ) -> Any:
-    if current_user.is_superuser:
+    if crud.crud_user.is_superuser(current_user):
         return crud.crud_author.create(db=db, obj_in=author_in)
     raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

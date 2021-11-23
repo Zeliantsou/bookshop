@@ -1,12 +1,11 @@
-from sqlalchemy import Column, ForeignKey, Integer
+from sqlalchemy import Column, ForeignKey, Integer, Table
 
 from db.base_class import Base
 
 
-class AuthorBook(Base):
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    author_id = Column(Integer, ForeignKey('author.id'))
-    book_id = Column(Integer, ForeignKey('book.id'))
-
-    def __tablename__(cls):
-        return 'author_book'
+author_book = Table(
+    'author_book',
+    Base.metadata,
+    Column('author_id', Integer(), ForeignKey('author.id')),
+    Column('book_id', Integer(), ForeignKey('book.id'))
+)

@@ -5,8 +5,15 @@ class UserBaseSchema(BaseModel):
     name: str
     email: EmailStr
 
+    class Config:
+        orm_mode = True
 
-class UserCreateUpdateSchema(UserBaseSchema):
+
+class UserCreateSchema(UserBaseSchema):
+    password: str
+
+
+class UserUpdateSchema(UserBaseSchema):
     password: str
 
 
@@ -24,3 +31,8 @@ class UserRetrieveListSchemaForAdmin(UserBaseSchema):
     hashed_password: str
     is_superuser: bool
     is_active: bool
+
+
+class UserLoginSchema(BaseModel):
+    name: str
+    password: str
