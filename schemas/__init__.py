@@ -18,5 +18,6 @@ from schemas.user import (
     UserRetrieveListSchema,
     UserUpdateSchemaForAdmin,
     UserRetrieveListSchemaForAdmin,
-    UserLoginSchema
+    UserLoginSchema,
+    CreateFirstSuperuserSchema
 )

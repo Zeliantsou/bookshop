@@ -13,8 +13,14 @@ class UserCreateSchema(UserBaseSchema):
     password: str
 
 
+class CreateFirstSuperuserSchema(UserCreateSchema):
+    is_superuser: bool
+
+
 class UserUpdateSchema(UserBaseSchema):
-    password: str
+    name: str = None
+    email: EmailStr = None
+    password: str = None
 
 
 class UserRetrieveListSchema(UserBaseSchema):

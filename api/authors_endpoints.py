@@ -1,32 +1,14 @@
-from typing import List, Any
+from typing import List, Optional, Any
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-import schemas
 import models
-import crud
+import schemas
+import services
 from api.deps import get_db, get_current_user
 
 router = APIRouter()
-
-
-@router.get('/', response_model=List[schemas.AuthorRetrieveListSchema])
-def get_author_list_admin(
-    db: Session = Depends(get_db),
-    skip: int = 0,
-    limit: int = 100,
-) -> Any:
-    return crud.crud_author.get_multi(db, skip=skip, limit=limit)
-
-
-@router.get('/', response_model=List[schemas.AuthorBaseSchema])
-def get_author_list_user(
-    db: Session = Depends(get_db),
-    skip: int = 0,
-    limit: int = 100,
-) -> Any:
-    return crud.crud_author.get_multi(db, skip=skip, limit=limit)
 
 
 @router.post('/', response_model=schemas.AuthorCreateUpdateSchema)
@@ -35,10 +17,61 @@ def create_author(
         author_in: schemas.AuthorCreateUpdateSchema,
         db: Session = Depends(get_db),
         current_user: models.User = Depends(get_current_user),
-) -> Any:
-    if crud.crud_user.is_superuser(current_user):
-        return crud.crud_author.create(db=db, obj_in=author_in)
-    raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Current user can't create a book",
-        )
+) -> models.Author:
+    return services.author_services.create_author(
+        author_in=author_in,
+        db=db,
+        current_user=current_user
+    )
+
+
+@router.patch('/{author_id}', response_model=schemas.AuthorCreateUpdateSchema)
+def update_author(
+        author_id: int,
+        author_in: schemas.AuthorCreateUpdateSchema,
+        db: Session = Depends(get_db),
+        current_user: models.User = Depends(get_current_user)
+) -> models.Author:
+    return services.author_services.update_author(
+        author_id=author_id,
+        author_in=author_in,
+        db=db,
+        current_user=current_user
+    )
+
+
+@router.get('/{author_id}', response_model=schemas.AuthorRetrieveListSchema)
+def get_author(
+        author_id: int,
+        db: Session = Depends(get_db)
+) -> Optional[models.Author]:
+    return services.author_services.get_author(
+        author_id=author_id,
+        db=db
+    )
+
+
+@router.get('/list/', response_model=List[schemas.AuthorRetrieveListSchema])
+def get_author_list(
+    db: Session = Depends(get_db),
+    skip: int = None,
+    limit: int = None,
+) -> List[models.Author]:
+    return services.author_services.get_author_list(
+        db=db,
+        skip=skip,
+        limit=limit
+    )
+
+
+@router.delete('/{author_id}', response_model=schemas.AuthorBaseSchema)
+def delete_author(
+        author_id: int,
+        db: Session = Depends(get_db),
+        current_user: models.User = Depends(get_current_user)
+) -> models.Author:
+    return services.author_services.delete_author(
+        author_id=author_id,
+        db=db,
+        current_user=current_user
+    )
