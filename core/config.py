@@ -1,16 +1,17 @@
-import secrets
+import os
 from typing import Any, Union, List, Dict, Optional
 
-from pydantic import BaseSettings, AnyHttpUrl, HttpUrl, EmailStr, PostgresDsn, validator
+from pydantic import BaseSettings, AnyHttpUrl, EmailStr, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
-    API_V1_STR: str = 'api/v1'
-    SECRET_KEY: str = secrets.token_urlsafe(32)  # const
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
-    SERVER_NAME: str
-    SERVER_HOST: AnyHttpUrl
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    API_V1_STR: str = '/api/v1'
+    SECRET_KEY: str = os.environ.get('SECRET_KEY')
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES')
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = os.environ.get('REFRESH_TOKEN_EXPIRE_MINUTES')
+    SERVER_NAME: str = os.environ.get('SERVER_NAME')
+    SERVER_HOST: AnyHttpUrl = os.environ.get('SERVER_HOST')
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = os.environ.get('BACKEND_CORS_ORIGINS')
 
     @validator("BACKEND_CORS_ORIGINS", pre=True)
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
@@ -20,20 +21,13 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
-    PROJECT_NAME: str
-    # SENTRY_DSN: Optional[HttpUrl] = None  # для чего это?
+    PROJECT_NAME: str = 'BookShop'
 
-    @validator("SENTRY_DSN", pre=True)
-    def sentry_dsn_can_be_blank(cls, v: str) -> Optional[str]:
-        if len(v) == 0:
-            return None
-        return v
-
-    POSTGRES_SERVER: str
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_DB: str
-    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
+    POSTGRES_SERVER: str = os.environ.get('POSTGRES_SERVER')
+    POSTGRES_USER: str = os.environ.get('POSTGRES_USER')
+    POSTGRES_PASSWORD: str = os.environ.get('POSTGRES_PASSWORD')
+    POSTGRES_DB: str = os.environ.get('POSTGRES_DB')
+    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
@@ -47,9 +41,9 @@ class Settings(BaseSettings):
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
 
-    FIRST_SUPERUSER: EmailStr
-    FIRST_SUPERUSER_EMAIL: str
-    FIRST_SUPERUSER_PASSWORD: str
+    FIRST_SUPERUSER: str = os.environ.get('FIRST_SUPERUSER')
+    FIRST_SUPERUSER_EMAIL: EmailStr = os.environ.get('FIRST_SUPERUSER_EMAIL')
+    FIRST_SUPERUSER_PASSWORD: str = os.environ.get('FIRST_SUPERUSER_PASSWORD')
     USERS_OPEN_REGISTRATION: bool = False
 
     class Config:
@@ -57,3 +51,13 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# {
+#   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgyNzkxNjgsInN1YiI6IjEifQ.MWlg0KrPSEr1C-_k1KtmEQ4ykDcctOptc8_d6FXuj-M",
+#   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgzNjU1NjgsInN1YiI6IjEifQ.pFA69Mu5xMGtj3GuwX9Yj07e_5NiYp5MBsJn22P0Hrg"
+# }
+
+# {
+#   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgyODcxODcsInN1YiI6IjQifQ.-QjOMK2k35LKfb6rlIhWw5pcOSv0t9NPbVRlcE8bR2s",
+#   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgzNzM1ODcsInN1YiI6IjQifQ.7yCGPzqze2zP3SUh5hyBleqLdHUxTJNMYtKkcePHcNU"
+# }

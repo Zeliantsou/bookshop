@@ -4,26 +4,39 @@ from datetime import date
 
 from pydantic import BaseModel
 
-from schemas.author import AuthorBaseSchema
-
 
 class BookBaseSchema(BaseModel):
+    """
+    Base schema for book.
+    """
     name: str
     description: Optional[str]
     price: Decimal
-    added: date = date.today()  # нужно ли вызывать today?
+    added: date = date.today()
     pages: int
-    authors: List[AuthorBaseSchema]
+
+    class Config:
+        orm_mode = True
 
 
-class BookCreateUpdateSchemaForAdmin(BookBaseSchema):
+class BookCreateUpdateSchema(BookBaseSchema):
+    """
+    Schema for creating and updating books.
+    """
     owner_id: Optional[int]
+    author_ids: List[int]
 
 
 class BookRetrieveListSchemaForAdmin(BookBaseSchema):
+    """
+    Schema for retrieving list of book or certain book for superuser.
+    """
     id: int
     owner_id: Optional[int]
 
 
 class BookRetrieveListSchema(BookBaseSchema):
-    owner_id: Optional[int]  # поле, чтобы выводилось не id, a name user
+    """
+    Schema for retrieving list of book or certain book for plain user.
+    """
+    owner_id: Optional[int]
