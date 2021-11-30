@@ -13,6 +13,9 @@ ALGORITHM = "HS256"
 
 
 def create_token(subject: Union[str, Any], timedelta_minutes: int) -> str:
+    """
+    Create token.
+    """
     expire = datetime.utcnow() + timedelta(
         minutes=timedelta_minutes
     )
@@ -22,8 +25,14 @@ def create_token(subject: Union[str, Any], timedelta_minutes: int) -> str:
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """
+    Verify password.
+    """
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def get_password_hash(password: str) -> str:
+    """
+    Get password hash.
+    """
     return pwd_context.hash(password)

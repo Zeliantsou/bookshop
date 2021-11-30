@@ -1,6 +1,7 @@
 from typing import Any, Dict, Optional, Union
 
 from sqlalchemy.orm import Session
+from fastapi import HTTPException, status
 
 from crud.base import CRUDBase
 from models.user import User
@@ -9,6 +10,9 @@ from core.security import get_password_hash, verify_password
 
 
 class CRUDUser(CRUDBase[User, UserCreateSchema, UserUpdateSchema]):
+    """
+    CRUD user with methods to Create, Read, Update, Delete (CRUD).
+    """
 
     def get_by_name(self, db: Session, *, name: str) -> Optional[User]:
         return db.query(User).filter(User.name == name).first()
@@ -51,6 +55,15 @@ class CRUDUser(CRUDBase[User, UserCreateSchema, UserUpdateSchema]):
 
     def is_active(self, user: User) -> bool:
         return user.is_active
+
+    def allow_or_403(self, user: User, check_owner_id: int = None) -> None:
+        if check_owner_id and user.id == check_owner_id:
+            return
+        if not self.is_superuser(user):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail='Current user does not have permission for this action'
+            )
 
 
 crud_user = CRUDUser(User)

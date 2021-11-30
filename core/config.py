@@ -52,15 +52,12 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-
 # {
-#   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc5NDQzMzgsInN1YiI6IjEifQ.JzGTvjwkXfqj8sJWTNQHGPJHh1CuFTS36bO3DIZjYAk",
-#   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwMzA3MzgsInN1YiI6IjEifQ.2vYB3vRvRf9avP_PoBA5AygB1dRqT1ENbb_oBNiFziE"
+#   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgyNzkxNjgsInN1YiI6IjEifQ.MWlg0KrPSEr1C-_k1KtmEQ4ykDcctOptc8_d6FXuj-M",
+#   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgzNjU1NjgsInN1YiI6IjEifQ.pFA69Mu5xMGtj3GuwX9Yj07e_5NiYp5MBsJn22P0Hrg"
 # }
 
-
 # {
-#   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc5NDU0MzQsInN1YiI6IjYifQ.FbmvZ9QoAnSQ4F2mYt4fMdTZXsyCal4cqKHIjLus3QU",
-#   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwMzE4MzQsInN1YiI6IjYifQ.jKJd9N4z3Xv8VVNyAxRwmybVdC5P615XTmSXXHd1j5A"
+#   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgyODcxODcsInN1YiI6IjQifQ.-QjOMK2k35LKfb6rlIhWw5pcOSv0t9NPbVRlcE8bR2s",
+#   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgzNzM1ODcsInN1YiI6IjQifQ.7yCGPzqze2zP3SUh5hyBleqLdHUxTJNMYtKkcePHcNU"
 # }
-

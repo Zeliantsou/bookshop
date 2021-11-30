@@ -6,6 +6,9 @@ from crud.crud_user import crud_user
 
 
 def init_db(db: Session) -> None:
+    """
+    Create the first superuser if it does not exist.
+    """
     user = crud_user.get_by_name(db, name=settings.FIRST_SUPERUSER)
     if not user:
         user_in = CreateFirstSuperuserSchema(

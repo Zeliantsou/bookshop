@@ -5,7 +5,7 @@ from schemas.author import (
 )
 from schemas.book import (
     BookBaseSchema,
-    BookCreateUpdateSchemaForAdmin,
+    BookCreateUpdateSchema,
     BookRetrieveListSchemaForAdmin,
     BookRetrieveListSchema
 )
@@ -16,8 +16,6 @@ from schemas.user import (
     UserCreateSchema,
     UserUpdateSchema,
     UserRetrieveListSchema,
-    UserUpdateSchemaForAdmin,
-    UserRetrieveListSchemaForAdmin,
     UserLoginSchema,
     CreateFirstSuperuserSchema
 )

@@ -11,6 +11,9 @@ if TYPE_CHECKING:
 
 
 class Author(Base):
+    """
+    Author model.
+    """
     id = Column(Integer, primary_key=True, index=True, unique=True)
     name = Column(String, index=True, unique=True)
     description = Column(String)

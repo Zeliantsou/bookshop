@@ -5,6 +5,9 @@ from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
 @as_declarative()
 class Base:
+    """
+    Base class for models. Automatically create table name.
+    """
     id: Any
     __name__: str
 

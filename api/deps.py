@@ -10,6 +10,9 @@ import services
 
 
 def get_db() -> Generator:
+    """
+    Get db.
+    """
     try:
         db = SessionLocal()
         yield db
@@ -21,6 +24,9 @@ def get_current_user(
         db: Session = Depends(get_db),
         token: str = Header(None),
 ) -> models.User:
+    """
+    Get current user by token.
+    """
     token_data = services.login_services.get_token_data(token=token)
     user = crud.crud_user.get(db, id=token_data.sub)
     if not user:

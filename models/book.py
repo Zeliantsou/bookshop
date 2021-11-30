@@ -13,6 +13,9 @@ if TYPE_CHECKING:
 
 
 class Book(Base):
+    """
+    Book model.
+    """
     id = Column(Integer, primary_key=True, unique=True, index=True, autoincrement=True)
     name = Column(String, unique=True, index=True)
     description = Column(String)

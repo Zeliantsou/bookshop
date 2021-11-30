@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 from jose import jwt
+from sqlalchemy.orm import Session
 
 import crud
 from core import security
@@ -7,22 +8,37 @@ from core.config import settings
 import schemas
 
 
-def create_access_token(user_id):
+def create_access_token(user_id: int) -> str:
+    """
+    Create access token.
+    """
     return security.create_token(user_id, settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
 
-def create_refresh_token(user_id):
+def create_refresh_token(user_id: int) -> str:
+    """
+    Create refresh token.
+    """
     return security.create_token(user_id, settings.REFRESH_TOKEN_EXPIRE_MINUTES)
 
 
-def generate_tokens(user_id):
+def generate_tokens(user_id: id) -> dict:
+    """
+    Generate access and refresh tokens.
+    """
     return {
         "access_token": create_access_token(user_id),
         "refresh_token": create_refresh_token(user_id),
     }
 
 
-def login_tokens(creds, db):
+def login_tokens(
+        creds: schemas.UserLoginSchema,
+        db: Session
+) -> dict:
+    """
+    Login an user.
+    """
     creds = creds.dict()
     user = crud.crud_user.authenticate(db, **creds)
     if not user:
@@ -38,7 +54,10 @@ def login_tokens(creds, db):
     return generate_tokens(user.id)
 
 
-def get_token_data(token):
+def get_token_data(token: str) -> schemas.TokenPayload:
+    """
+    Get data from token.
+    """
     try:
         payload = jwt.decode(
             token=token,
@@ -54,7 +73,10 @@ def get_token_data(token):
     return token_data
 
 
-def refresh_tokes(db, refresh_token):
+def refresh_tokes(db: Session, refresh_token: str) -> dict:
+    """
+    refresh access and refresh tokens.
+    """
     token_data = get_token_data(refresh_token)
     user = crud.crud_user.get(db=db, id=token_data.sub)
     if not user:

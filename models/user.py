@@ -10,6 +10,9 @@ if TYPE_CHECKING:
 
 
 class User(Base):
+    """
+    User model.
+    """
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String, index=True, unique=True)
     email = Column(String, unique=True, nullable=False)
